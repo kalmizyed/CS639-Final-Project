@@ -6,16 +6,10 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/apartment_structure/protos/Door.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/GlossyPaint.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/obstacles/protos/OilBarrel.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/robotis/darwin-op/protos/Darwin-op.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/sony/aibo/protos/AiboErs7.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/pipes/protos/LJoint.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/tools/protos/Wrench.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/tools/protos/Hammer.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/pallet/protos/WoodenPallet.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/tables/protos/Table.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/containers/protos/CardboardBox.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/tools/protos/PaintBucket.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/tools/protos/Screwdriver.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/pallet/protos/WoodenPalletStack.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/containers/protos/WoodenBox.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/valves/protos/LeverValve.proto"
@@ -28,12 +22,16 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/hospital/protos/EmergencyExitSign.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/stairs/protos/StraightStairsRail.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/stairs/protos/StraightStairs.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/universal_robots/protos/UR5e.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/conveyors/protos/ConveyorBelt.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/containers/protos/PlasticFruitBox.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/solids/protos/SolidBox.proto"
 
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.20991621131898758 0.5790357422816553 -0.7878152025607368 0.8625410243080257
-  position -8.260560401077061 1.3505004847514672 6.417126969690869
+  orientation 0.15897766379539244 0.06534855010251214 -0.9851170841141975 2.37208197094028
+  position 5.665967245993081 1.6075932571868239 3.1957617553405684
 }
 TexturedBackground {
   texture "empty_office"
@@ -56,6 +54,12 @@ Floor {
   tileSize 1 1
   appearance ThreadMetalPlate {
   }
+}
+ConveyorBelt {
+  translation 0 -3.41 0
+  size 5 0.5 0.6
+  speed 0
+  acceleration 0
 }
 Door {
   translation 10.04 -4 3.27
@@ -106,16 +110,6 @@ Floor {
     metalness 0
   }
 }
-Darwin-op {
-  translation -0.184108 -4.90072 0.820325
-  rotation -0.6222989795058281 0.45366398505948424 -0.6379129789916121 -2.247155307179586
-  controller "<generic>"
-}
-AiboErs7 {
-  translation 1.1565273 -4.9369095 0.82215018
-  rotation -0.26735092200225136 0.7698527754008746 -0.5795258309274203 2.679
-  controller "<generic>"
-}
 LJoint {
   translation -7.571 3.19 0.712
   rotation 0 0 1 -1.5708
@@ -125,43 +119,21 @@ LJoint {
   translation -7.571 3.277 2.422
   rotation -0.577350278331609 0.577350264618634 0.577350264618634 2.094395086923155
 }
-Wrench {
-  translation -0.35779017 -4.3479161 0.74
-  rotation 0 0 1 -1.5707953071795862
-  name "wrench(1)"
-}
-Wrench {
-  translation 0.8606647 -4.6966955 0.74
-  rotation 0 0 1 -2.565635307179586
-}
-Hammer {
-  translation -0.807916 -4.68048 0.754
-  rotation 0 0 1 -2.094395307179586
-  name "hammer(1)"
-}
-Hammer {
-  translation 1.5252822 -4.8882693 0.754
-  rotation 0 0 1 2.35619
-}
 WoodenPallet {
   translation -3.05 -12.1 0.52
   rotation 0.44721372362178063 0.44721372362178063 0.7745965212991105 -1.82348
 }
 Table {
-  translation -0.23882837 -4.8402928 0
-  size 4.5 1.5 0.74
+  translation 0.011172 -4.69029 0
+  size 3 2 0.5
+}
+SolidBox {
+  translation 0 -3.41 0.66
+  size 0.1 0.1 0.1
 }
 CardboardBox {
   translation 2.2324987 -11.807743 0.31
   rotation 0 0 1 -1.5707963267948966
-}
-PaintBucket {
-  translation -0.72150306 -5.1778419 0.74
-  rotation 0 0 1 1.0472
-}
-Screwdriver {
-  translation -0.054863304 -5.1915357 0.752
-  rotation 0.37796390461552926 0.6546538347889604 0.6546538347889604 2.41886
 }
 WoodenPalletStack {
   translation -6.8424942 -11.754332 0
@@ -474,4 +446,11 @@ StraightStairs {
       }
     }
   ]
+}
+UR5e {
+  translation 0 -4.08 0.5
+}
+PlasticFruitBox {
+  translation 0.02 -4.86 0.5
+  rotation 0 0 1 1.5708
 }
