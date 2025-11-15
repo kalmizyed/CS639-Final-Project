@@ -449,6 +449,8 @@ StraightStairs {
 }
 UR5e {
   translation 0 -4.08 0.5
+  controller "sorting_robot"
+  supervisor TRUE
 }
 PlasticFruitBox {
   translation 0.02 -4.86 0.5
