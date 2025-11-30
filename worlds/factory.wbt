@@ -25,13 +25,12 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/universal_robots/protos/UR5e.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/conveyors/protos/ConveyorBelt.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/containers/protos/PlasticFruitBox.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/solids/protos/SolidBox.proto"
 
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.15897766379539244 0.06534855010251214 -0.9851170841141975 2.37208197094028
-  position 5.665967245993081 1.6075932571868239 3.1957617553405684
+  orientation 0.17791237721095918 0.11154208217252987 -0.977704224159721 2.041787453689438
+  position 1.2305167952301028 -1.2517453981094206 1.913845982454057
 }
 TexturedBackground {
   texture "empty_office"
@@ -127,9 +126,26 @@ Table {
   translation 0.011172 -4.69029 0
   size 3 2 0.5
 }
-SolidBox {
-  translation 0 -3.41 0.66
-  size 0.1 0.1 0.1
+Solid {
+  translation 0 -3.41 0.615
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          emissiveColor 1 0 0
+        }
+      }
+      geometry Box {
+        size 0.03 0.03 0.03
+      }
+    }
+  ]
+  boundingObject Box {
+    size 0.03 0.03 0.03
+  }
+  physics Physics {
+    mass 0.1
+  }
 }
 CardboardBox {
   translation 2.2324987 -11.807743 0.31
@@ -448,11 +464,71 @@ StraightStairs {
   ]
 }
 UR5e {
+  hidden position_0_0 -0.24981098555293685
+  hidden rotation_1 0 0 -1 0.24981098555293713
+  hidden position_1_0 -1.483214771047943
+  hidden rotation_2 0 1 0 0.08758122895204873
+  hidden position_2_0 1.9781565152075615
+  hidden rotation_3 0 0.9999999999999999 0 1.9781565152075615
+  hidden position_3_0 -2.065692271500848
+  hidden rotation_4 0 -0.9999999999999999 0 0.4948962715008449
+  hidden position_4_0 -1.570792971413758
+  hidden rotation_5 0 0 -1 1.5707929714137583
+  hidden position_5_0 1.32098534096822
+  hidden rotation_6 0 1 0 1.3209853409682202
+  hidden position_7_0 0.7960563539209204
+  hidden position_7_1 0.7964652119845028
+  hidden position_7_2 0.7960343390158559
+  hidden position_7_3 0.7964430304196402
+  hidden rotation_8 6.713454550788514e-08 0.3876014279946776 0.9218270624235777 3.141592972920096
+  hidden position_9_0 -0.7656502529109819
+  hidden rotation_10 -1 0 0 0.7656568668111438
+  hidden rotation_12 6.716795995681969e-08 0.3877943471707212 0.9217459217715205 3.1415929728919885
+  hidden position_12_0 -0.7660591109745643
+  hidden rotation_13 1 0 0 0.7960343390158555
+  hidden position_14_0 -0.7656310348594104
+  hidden rotation_15 -1 0 0 0.7656417972946481
+  hidden rotation_17 1 0 0 0.7964519608783641
+  hidden position_17_0 -0.7660397262631955
   translation 0 -4.08 0.5
+  rotation 0 0 1 1.570846325
   controller "sorting_robot"
   supervisor TRUE
+  toolSlot [
+    Pose {
+      rotation 1 0 0 -1.570796
+      children [
+        Robotiq2f85Gripper {
+          name "robotiq_2f85"
+        }
+      ]
+    }
+    Pose {
+      translation -0.05 0 0
+      rotation 0 0 1 1.570796
+      children [
+        Solid {
+          children [
+            Camera {
+              name "wrist_camera"
+              fieldOfView 1.0472
+              width 640
+              height 480
+              far 3
+            }
+          ]
+          name "wrist_cam_mount"
+          boundingObject Box {
+            size 0.02 0.02 0.03
+          }
+          physics Physics {
+            mass 0.05
+          }
+        }
+      ]
+    }
+  ]
 }
 PlasticFruitBox {
-  translation 0.02 -4.86 0.5
-  rotation 0 0 1 1.5708
+  translation 0.81 -4.04 0.5
 }
