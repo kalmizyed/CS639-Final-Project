@@ -36,7 +36,7 @@ class RobotPlacerWithVision():
     BLOCK_HEIGHT = 0.03
     CONVEYOR_Z_OFFSET = 0.1
 
-    initial_position = [0.65, 0.15, 0.65]
+    initial_position = [0.55, 0.15, 0.65]
     initial_rotation = [0, 0, -math.pi/2]
     drop_prep_position = [0.45, -0.15, 0.6]
     drop_position = [0, -0.6, 0.6]
@@ -57,10 +57,7 @@ class RobotPlacerWithVision():
         self.CAMERA['fx'] = self.CAMERA['width']/(2*math.tan(self.CAMERA['fovx']/2))
         self.CAMERA['fy'] = self.CAMERA['height']/(2*math.tan(self.CAMERA['fovy']/2))
 
-    def getRobotCommand(self, tt, current_q, current_image_bgr):
-
-        # This is the code we will call. Please don't change the signature!
-        
+    def getRobotCommand(self, tt, current_q, current_image_bgr):        
         # Update current joints and task-space transformations
         self.current_joints = current_q
         self.next_joints = current_q
@@ -76,16 +73,15 @@ class RobotPlacerWithVision():
 
         # Call current FSM function
         self.fsmState()
-        
-        # you should return a 7-length list with the desired joint angles and the gripper value
-        # e.g., the following line would be for a random configuration with the gripper closed
+
         return self.next_joints + [self.gripperClosed]
     
 
     ### Helper functions
 
+    # Get centers of detected objects within the current image
     def getPixelLocations(self):
-        color = self.COLORS[self.block_cur]
+        color = (1, 0, 0)
         b, g, r = cv2.split(self.current_image)
 
         r = cv2.threshold(r, 200*color[0], 255*color[0], cv2.THRESH_BINARY)[1]
@@ -96,7 +92,13 @@ class RobotPlacerWithVision():
         
         contours, hierarchy = cv2.findContours(objects, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
         centers = []
+        width, height = objects.shape
         for i in contours:
+            # Skip if touching edge of image
+            x, y, w, h = cv2.boundingRect(i)
+            if x == 0 or y == 0 or x+w == width or y+h == height: continue
+
+            # Get center point
             M = cv2.moments(i)
             if M['m00'] != 0:
                 cx = int(M['m10']/M['m00'])
@@ -113,46 +115,41 @@ class RobotPlacerWithVision():
         self.desired_pose = self.initial_position + self.initial_rotation
         self.gripperClosed = False
         self.fsmState = self.generateTrajectory
-        print("RESET") # TODO remove
 
     def prepMoveToBin(self):
         self.desired_pose = self.drop_prep_position + self.initial_rotation
         self.fsmState = self.generateTrajectory
-        print("PREP") # TODO remove
     
     def postMoveToBin(self):
         self.desired_pose = self.drop_post_position + self.initial_rotation
         self.fsmState = self.generateTrajectory
-        print("POST") # TODO remove
 
     # Set goal position to bin
     def moveToBin(self):
         self.desired_pose = self.drop_position + self.initial_rotation
         self.fsmState = self.generateTrajectory
-        print("MOVE TO BIN") # TODO remove
 
-    # Decide next block to get, block_cur
-    def decideNextBlock(self):
-        # If no blocks left, move to end state
-        if self.__block_cur_index__ == len(self.__blocks__):
-            self.fsmState = self.endState
+    # Wait for valid block(s) to appear and be fully within the camera image
+    def waitForBlock(self):
+        # Wait for valid block(s)
+        centers = self.getPixelLocations()
+        if len(centers) == 0:
+            return
         
-        # Else, get next block and move to next state
+        # If valid block visible, get block furthest down the belt and move to next state
         else:
-            self.block_cur = self.__blocks__[self.__block_cur_index__]
+            self.block_cur = min(centers, key=lambda point: point[0])
             self.pauseStartTime = self.timestep
             self.fsmState = self.getBlockLocation
 
-    # Get location of current desired block
+    # Get location of block furthest down the belt
     def getBlockLocation(self):
         # Wait for a small number of timesteps to ensure camera is done moving
         if self.timestep - self.pauseStartTime < self.cameraWaitTime:
             return
 
-        centers = self.getPixelLocations()
-
         # Assumes only one object center is returned
-        u, v = centers[0]
+        u, v = self.block_cur
         
         # convert pixel location to camera-space location
         cx = self.CAMERA['width']/2
@@ -189,7 +186,7 @@ class RobotPlacerWithVision():
         if self.trajectory['t'] == self.trajectory['T']:
             self.trajectory = {}
             if self.desired_pose == self.initial_position + self.initial_rotation:
-                self.fsmState = self.decideNextBlock
+                self.fsmState = self.waitForBlock
             elif self.desired_pose == self.drop_prep_position + self.initial_rotation:
                 self.fsmState = self.moveToBin
             elif self.desired_pose == self.drop_position + self.initial_rotation:
@@ -216,7 +213,3 @@ class RobotPlacerWithVision():
         elif self.timestep - self.pauseStartTime >= self.gripperOpenTime:
             self.__block_cur_index__ += 1
             self.fsmState = self.postMoveToBin
-            
-
-    def endState(self):
-        pass
