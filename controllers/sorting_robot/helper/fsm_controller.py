@@ -25,12 +25,18 @@ class RobotPlacerWithVision():
         'height': 480
     }
 
-    # Colors to search for
+    # Colors lookups that can be searched for
     COLORS = {
         'red': [1, 0, 0],
         'blue': [0, 0, 1],
-        'green': [0, 1, 0]
+        'green': [0, 1, 0],
+        'yellow': [1, 1, 0],
+        'purple': [1, 0, 1],
+        'orange': [1, 0.5, 1]
     }
+
+    # Colors to search for
+    colors = ['red', 'blue']
 
     # In-world object dimensions
     BLOCK_HEIGHT = 0.03
@@ -51,7 +57,7 @@ class RobotPlacerWithVision():
     drop_post_position = [0.45, -0.15, 0.65]
     
     gripperClosed = False
-    gripperCloseTime = 16 # Timesteps
+    gripperCloseTime = 24 # Timesteps
     gripperOpenTime = 16 # Timesteps
 
     def __init__(self):
@@ -89,29 +95,31 @@ class RobotPlacerWithVision():
 
     # Get centers of detected objects within the current image
     def getPixelLocations(self):
-        color = (1, 0, 0)
-        b, g, r = cv2.split(self.current_image)
-
-        r = cv2.threshold(r, 200*color[0], 255*color[0], cv2.THRESH_BINARY)[1]
-        g = cv2.threshold(g, 200*color[1], 255*color[1], cv2.THRESH_BINARY)[1]
-        b = cv2.threshold(b, 200*color[2], 255*color[2], cv2.THRESH_BINARY)[1]
-        merged = cv2.merge([b, g, r])
-        objects = cv2.threshold(cv2.cvtColor(merged, cv2.COLOR_BGR2GRAY), 1, 255, cv2.THRESH_BINARY)[1]
-        
-        contours, hierarchy = cv2.findContours(objects, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
         centers = []
-        width, height = objects.shape
-        for i in contours:
-            # Skip if touching edge of image
-            x, y, w, h = cv2.boundingRect(i)
-            if x == 0 or y == 0 or x+w == width or y+h == height: continue
 
-            # Get center point
-            M = cv2.moments(i)
-            if M['m00'] != 0:
-                cx = int(M['m10']/M['m00'])
-                cy = int(M['m01']/M['m00'])
-                centers.append((cx, cy))
+        for name in self.colors:
+            color = self.COLORS[name]
+            b, g, r = cv2.split(self.current_image)
+
+            r = cv2.threshold(r, 200*color[0], 255*color[0], cv2.THRESH_BINARY)[1]
+            g = cv2.threshold(g, 200*color[1], 255*color[1], cv2.THRESH_BINARY)[1]
+            b = cv2.threshold(b, 200*color[2], 255*color[2], cv2.THRESH_BINARY)[1]
+            merged = cv2.merge([b, g, r])
+            objects = cv2.threshold(cv2.cvtColor(merged, cv2.COLOR_BGR2GRAY), 1, 255, cv2.THRESH_BINARY)[1]
+            
+            contours, hierarchy = cv2.findContours(objects, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+            width, height = objects.shape
+            for i in contours:
+                # Skip if touching edge of image
+                x, y, w, h = cv2.boundingRect(i)
+                if x == 0 or y == 0 or x+w == width or y+h == height: continue
+
+                # Get center point
+                M = cv2.moments(i)
+                if M['m00'] != 0:
+                    cx = int(M['m10']/M['m00'])
+                    cy = int(M['m01']/M['m00'])
+                    centers.append((cx, cy))
         
         return centers
     

@@ -29,7 +29,7 @@ WorldInfo {
 }
 Viewpoint {
   orientation -0.22017094089997616 -0.1616817525727809 0.9619686937048488 4.37163381343355
-  position 0.9669688625057136 -0.6646777156784779 2.496323000908785
+  position 0.6558841621745054 -1.6563272255866315 1.994284347324524
 }
 TexturedBackground {
   texture "empty_office"
@@ -146,6 +146,28 @@ Solid {
     }
   ]
   name "Cube1"
+  boundingObject Box {
+    size 0.03 0.03 0.03
+  }
+  physics Physics {
+    mass 0.1
+  }
+}
+Solid {
+  translation -1.17 -3.52 0.615
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          emissiveColor 0 0 1
+        }
+      }
+      geometry Box {
+        size 0.03 0.03 0.03
+      }
+    }
+  ]
+  name "Cube2"
   boundingObject Box {
     size 0.03 0.03 0.03
   }
@@ -486,10 +508,10 @@ UR5e {
   hidden position_7_1 0.7964652119845028
   hidden position_7_2 0.7960343390158559
   hidden position_7_3 0.7964430304196402
-  hidden rotation_8 6.71345434991382e-08 0.3876014171509802 0.9218270669830365 3.141592972920098
+  hidden rotation_8 6.713454349900346e-08 0.3876014171509802 0.9218270669830365 3.141592972920098
   hidden position_9_0 -0.7656502529109819
   hidden rotation_10 -1 0 0 0.7656502529109822
-  hidden rotation_12 6.716718243647783e-08 0.38778985726528 0.9217478107390163 3.1415929728926426
+  hidden rotation_12 6.716718244975052e-08 0.38778985726528 0.9217478107390163 3.1415929728926426
   hidden position_12_0 -0.7660591109745643
   hidden rotation_13 1 0 0 0.7960343390158555
   hidden position_14_0 -0.7656310348594104
