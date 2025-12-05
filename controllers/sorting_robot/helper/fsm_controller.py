@@ -55,7 +55,7 @@ class RobotPlacerWithVision():
     
     gripperClosed = False
     gripperCloseTime = 20 # Timesteps
-    gripperOpenTime = 16 # Timesteps
+    gripperOpenTime = 32 # Timesteps
 
     def __init__(self):
         self.fsmState = self.resetToDefault

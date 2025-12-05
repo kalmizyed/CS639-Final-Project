@@ -2,16 +2,17 @@ import math
 import numpy as np
 
 TIMESTEP_LENGTH = 0.032
-
-# TODO implement a function to check for collisions along a given path and/or generate a collision-free path?
+MAX_VELOCITY = math.pi
+MAX_ACCELERATION = math.pi
 
 ### Cubic Time Interpolation Functions ###
 
 # Get the minimum number of timesteps required
 # to move from start and end joint angles
 def getRequiredTime(theta_start, theta_end):
-    time = max([3 * abs(end - start) for start, end in zip(theta_start, theta_end)])
-    return math.ceil(time / TIMESTEP_LENGTH)
+    time_speed = max([(3/(2*MAX_VELOCITY)) * abs(end - start) for start, end in zip(theta_start, theta_end)])
+    time_accel = max([math.sqrt(abs((6/MAX_ACCELERATION)*(end - start))) for start, end in zip(theta_start, theta_end)])
+    return math.ceil(max(time_speed, time_accel) / TIMESTEP_LENGTH)
 
 # Get the desired position between start and end joint angles
 # at timestep t out of maximum time steps T
