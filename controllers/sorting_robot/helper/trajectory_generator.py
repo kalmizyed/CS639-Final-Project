@@ -10,7 +10,7 @@ TIMESTEP_LENGTH = 0.032
 # Get the minimum number of timesteps required
 # to move from start and end joint angles
 def getRequiredTime(theta_start, theta_end):
-    time = max([3 * (end - start) for start, end in zip(theta_start, theta_end)])
+    time = max([3 * abs(end - start) for start, end in zip(theta_start, theta_end)])
     return math.ceil(time / TIMESTEP_LENGTH)
 
 # Get the desired position between start and end joint angles

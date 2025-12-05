@@ -5,19 +5,18 @@ import numpy as np
 import cv2
 import helper.inverse_kinematics as IK
 import helper.trajectory_generator as Traj
+from enum import Enum
 
 class RobotPlacerWithVision():
 
     # COORDINATES RELATIVE TO CAMERA TABLE VIEW:
-    # X = UP/DOWN, higher = camera moves down, range ~ [0.4, 0.7]
-    # Y = LEFT/RIGHT, higher = camera moves right, range ~ [-0.05, 0.35]
+    # X = UP/DOWN, higher = camera moves up
+    # Y = LEFT/RIGHT, higher = camera moves left
     # Z = DEPTH
 
-    # Mat center in world: -0.1 2.75 0.7, so mat->robot = [0.1, -0.55, 0] turned 90 deg left = [-0.55, -0.1, 0], mat->camera = [-0.55, -0.15, 0]
-    # Camera: Robot->Camera = [-0.05 0 0], Camera->Robot = [0.05 0 0], Camera->Mat = [0.55, 0.15, 0]
-    # Robot center in world: 0 2.2 0.7, rotated 90 deg around Z (left)
-    # Camera rotation: -90 deg around Z (right), so camera->robot = 90 deg left
+    # Blocks can be sustainably grabbed when placed 0.8m apart on the belt at 0.05m/s
 
+    # Camera setup vars
     CAMERA = {
         'fovx': 1.0472,
         'near': 0.01,
@@ -26,27 +25,34 @@ class RobotPlacerWithVision():
         'height': 480
     }
 
+    # Colors to search for
     COLORS = {
         'red': [1, 0, 0],
         'blue': [0, 0, 1],
         'green': [0, 1, 0]
     }
 
-
+    # In-world object dimensions
     BLOCK_HEIGHT = 0.03
     CONVEYOR_Z_OFFSET = 0.1
     CONVEYOR_SPEED = 0.05
 
+    # Location tracking vars
+    class Location(Enum):
+        INITIAL = 1
+        PREP = 2
+        DROP = 3
+        POST = 4
+        OBJECT = 5
+    
     initial_position = [0.55, 0.15, 0.65]
-    initial_rotation = [0, 0, -math.pi/2]
-    drop_prep_position = [0.45, -0.15, 0.6]
-    drop_position = [0, -0.6, 0.6]
+    initial_rotation = [0, 0, math.pi/2]
+    drop_prep_position = [0.55, 0.15, 0.4]
     drop_post_position = [0.45, -0.15, 0.65]
     
     gripperClosed = False
     gripperCloseTime = 16 # Timesteps
     gripperOpenTime = 16 # Timesteps
-    cameraWaitTime = 0 # Timesteps
 
     def __init__(self):
         self.fsmState = self.resetToDefault
@@ -122,9 +128,6 @@ class RobotPlacerWithVision():
             elapsed += 1
             pos[1] -= self.CONVEYOR_SPEED * Traj.TIMESTEP_LENGTH
             required = Traj.getRequiredTime(self.current_joints, IK.getInverseKinematics(pos, self.current_joints)) + self.gripperCloseTime
-            print(elapsed, required)
-        print('Start:', start, Traj.getRequiredTime(self.current_joints, IK.getInverseKinematics(start, self.current_joints)) + self.gripperCloseTime)
-        print('Position:', pos, Traj.getRequiredTime(self.current_joints, IK.getInverseKinematics(pos, self.current_joints)) + self.gripperCloseTime, elapsed)
         return pos
     
     ### FSM States
@@ -132,28 +135,29 @@ class RobotPlacerWithVision():
     # Reset to default position
     def resetToDefault(self):
         self.desired_pose = self.initial_position + self.initial_rotation
+        self.location = self.Location.INITIAL
         self.gripperClosed = False
         self.fsmState = self.generateTrajectory
 
-    def prepMoveToBin(self):
+    def prepDrop(self):
         self.desired_pose = self.drop_prep_position + self.initial_rotation
+        self.location = self.Location.PREP
         self.fsmState = self.generateTrajectory
     
-    def postMoveToBin(self):
+    def postDrop(self):
         self.desired_pose = self.drop_post_position + self.initial_rotation
+        self.location = self.Location.POST
         self.fsmState = self.generateTrajectory
 
     # Set goal position to bin
-    def moveToBin(self):
-        self.desired_pose = self.drop_position + self.initial_rotation
-        self.fsmState = self.generateTrajectory
+    def moveToDrop(self):
+        self.desired_joints = self.current_joints[:]
+        self.location = self.Location.DROP
+        self.desired_joints[0] -= math.pi/2
+        self.fsmState = self.generateTrajectoryFromJoints
 
     # Wait for valid block(s) to appear and be fully within the camera image
     def waitForBlock(self):
-        # Wait for a small number of timesteps to ensure camera is done moving
-        if self.timestep - self.pauseStartTime < self.cameraWaitTime:
-            return
-
         # Wait for valid block(s)
         centers = self.getPixelLocations()
         if len(centers) == 0:
@@ -178,12 +182,13 @@ class RobotPlacerWithVision():
 
         # Move from current camera position to object location,
         # accounting for block height, camera offset, and gripper height
-        block_position = np.array(self.current_position) + np.array([-y, x-0.05, 0])
+        block_position = np.array(self.current_position) + np.array([y, -x+0.05, 0])
         block_position[2] = 0.165
         block_position[2] += self.CONVEYOR_Z_OFFSET
         start_pos = block_position.tolist() + self.initial_rotation
         self.desired_pose = self.getLocationAfterMotion(start_pos)
         if self.desired_pose:
+            self.location = self.Location.OBJECT
             self.fsmState = self.generateTrajectory
         else:
             self.fsmState = self.resetToDefault
@@ -197,6 +202,13 @@ class RobotPlacerWithVision():
         self.trajectory['start'] = self.current_joints
         self.trajectory['end'] = desired_joints
         self.fsmState = self.moveToLocation
+    
+    def generateTrajectoryFromJoints(self):
+        self.trajectory['T'] = Traj.getRequiredTime(self.current_joints, self.desired_joints)
+        self.trajectory['t'] = 0
+        self.trajectory['start'] = self.current_joints
+        self.trajectory['end'] = self.desired_joints
+        self.fsmState = self.moveToLocation
 
     # Given desired location and current location, update the next joint
     # position along the trajectory until the goal is reached
@@ -207,14 +219,13 @@ class RobotPlacerWithVision():
         
         if self.trajectory['t'] == self.trajectory['T']:
             self.trajectory = {}
-            if self.desired_pose == self.initial_position + self.initial_rotation:
-                self.pauseStartTime = self.timestep
+            if self.location == self.Location.INITIAL:
                 self.fsmState = self.waitForBlock
-            elif self.desired_pose == self.drop_prep_position + self.initial_rotation:
-                self.fsmState = self.moveToBin
-            elif self.desired_pose == self.drop_position + self.initial_rotation:
+            elif self.location == self.Location.PREP:
+                self.fsmState = self.moveToDrop
+            elif self.location == self.Location.DROP:
                 self.fsmState = self.dropAndMarkDone
-            elif self.desired_pose == self.drop_post_position + self.initial_rotation:
+            elif self.location == self.Location.POST:
                 self.fsmState = self.resetToDefault
             else:
                 self.fsmState = self.gripBlock
@@ -225,7 +236,7 @@ class RobotPlacerWithVision():
             self.gripperClosed = True
             self.pauseStartTime = self.timestep
         elif self.timestep - self.pauseStartTime >= self.gripperCloseTime:
-            self.fsmState = self.prepMoveToBin
+            self.fsmState = self.prepDrop
 
     # Drop block_cur; once gripper is fully open, verify if block is in basket,
     # then update block_cur_index and move to first state
@@ -235,4 +246,4 @@ class RobotPlacerWithVision():
             self.pauseStartTime = self.timestep
         elif self.timestep - self.pauseStartTime >= self.gripperOpenTime:
             self.__block_cur_index__ += 1
-            self.fsmState = self.postMoveToBin
+            self.fsmState = self.postDrop
