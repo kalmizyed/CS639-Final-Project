@@ -1,7 +1,7 @@
 import math
 import numpy as np
 
-TIMESTEP_LENGTH = 0.016
+TIMESTEP_LENGTH = 0.032
 
 # TODO implement a function to check for collisions along a given path and/or generate a collision-free path?
 
