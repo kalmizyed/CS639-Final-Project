@@ -46,18 +46,15 @@ class RobotPlacerWithVision():
     # Location tracking vars
     class Location(Enum):
         INITIAL = 1
-        PREP = 2
-        DROP = 3
-        POST = 4
-        OBJECT = 5
+        DROP = 2
+        OBJECT = 3
     
     initial_position = [0.55, 0.15, 0.65]
     initial_rotation = [0, 0, math.pi/2]
     drop_prep_position = [0.55, 0.15, 0.4]
-    drop_post_position = [0.45, -0.15, 0.65]
     
     gripperClosed = False
-    gripperCloseTime = 24 # Timesteps
+    gripperCloseTime = 20 # Timesteps
     gripperOpenTime = 16 # Timesteps
 
     def __init__(self):
@@ -65,6 +62,8 @@ class RobotPlacerWithVision():
         self.__block_cur_index__ = 0
         self.trajectory = {}
         self.pauseStartTime = None
+        self.initial_joints = None
+        self.drop_joints = None
 
         # Camera intrinsics
         self.CAMERA['fovy'] = 2 * math.atan(math.tan(self.CAMERA['fovx']*0.5) * (self.CAMERA['height']/self.CAMERA['width']))
@@ -142,26 +141,21 @@ class RobotPlacerWithVision():
 
     # Reset to default position
     def resetToDefault(self):
+        if not self.initial_joints:
+            self.initial_joints = IK.getInverseKinematics(self.initial_position + self.initial_rotation, self.current_joints)
         self.desired_pose = self.initial_position + self.initial_rotation
+        self.desired_joints = self.initial_joints
         self.location = self.Location.INITIAL
         self.gripperClosed = False
-        self.fsmState = self.generateTrajectory
-
-    def prepDrop(self):
-        self.desired_pose = self.drop_prep_position + self.initial_rotation
-        self.location = self.Location.PREP
-        self.fsmState = self.generateTrajectory
-    
-    def postDrop(self):
-        self.desired_pose = self.drop_post_position + self.initial_rotation
-        self.location = self.Location.POST
-        self.fsmState = self.generateTrajectory
+        self.fsmState = self.generateTrajectoryFromJoints
 
     # Set goal position to bin
     def moveToDrop(self):
-        self.desired_joints = self.current_joints[:]
+        if not self.drop_joints:
+            self.drop_joints = IK.getInverseKinematics(self.drop_prep_position + self.initial_rotation, self.current_joints)
+            self.drop_joints[0] -= math.pi/2
+        self.desired_joints = self.drop_joints
         self.location = self.Location.DROP
-        self.desired_joints[0] -= math.pi/2
         self.fsmState = self.generateTrajectoryFromJoints
 
     # Wait for valid block(s) to appear and be fully within the camera image
@@ -229,12 +223,8 @@ class RobotPlacerWithVision():
             self.trajectory = {}
             if self.location == self.Location.INITIAL:
                 self.fsmState = self.waitForBlock
-            elif self.location == self.Location.PREP:
-                self.fsmState = self.moveToDrop
             elif self.location == self.Location.DROP:
                 self.fsmState = self.dropAndMarkDone
-            elif self.location == self.Location.POST:
-                self.fsmState = self.resetToDefault
             else:
                 self.fsmState = self.gripBlock
 
@@ -244,7 +234,7 @@ class RobotPlacerWithVision():
             self.gripperClosed = True
             self.pauseStartTime = self.timestep
         elif self.timestep - self.pauseStartTime >= self.gripperCloseTime:
-            self.fsmState = self.prepDrop
+            self.fsmState = self.moveToDrop
 
     # Drop block_cur; once gripper is fully open, verify if block is in basket,
     # then update block_cur_index and move to first state
@@ -254,4 +244,4 @@ class RobotPlacerWithVision():
             self.pauseStartTime = self.timestep
         elif self.timestep - self.pauseStartTime >= self.gripperOpenTime:
             self.__block_cur_index__ += 1
-            self.fsmState = self.postDrop
+            self.fsmState = self.resetToDefault
