@@ -8,14 +8,6 @@ import helper.trajectory_generator as Traj
 from enum import Enum
 
 class RobotPlacerWithVision():
-
-    # COORDINATES RELATIVE TO CAMERA TABLE VIEW:
-    # X = UP/DOWN, higher = camera moves up
-    # Y = LEFT/RIGHT, higher = camera moves left
-    # Z = DEPTH
-
-    # Blocks can be sustainably grabbed when placed 0.8m apart on the belt at 0.05m/s
-
     # Camera setup vars
     CAMERA = {
         'fovx': 1.0472,
@@ -25,18 +17,26 @@ class RobotPlacerWithVision():
         'height': 480
     }
 
-    # Colors lookups that can be searched for
+    # Colors lookups that can be searched for, in BGR
     COLORS = {
-        'red': [1, 0, 0],
-        'blue': [0, 0, 1],
-        'green': [0, 1, 0],
-        'yellow': [1, 1, 0],
-        'purple': [1, 0, 1],
-        'orange': [1, 0.5, 1]
+        'base': {
+            'red': np.array([0, 0, 1]),
+            'blue': np.array([1, 0, 0]),
+            'green': np.array([0, 1, 0]),
+            'yellow': np.array([0, 1, 1]),
+            'purple': np.array([1, 0, 1]),
+            'cyan': np.array([1, 1, 0]),
+            'white': np.array([1, 1, 1]),
+            'orange': np.array([0, 0.5, 1]),
+            'lime': np.array([0, 1, 0.5]),
+            'mint': np.array([0.5, 1, 0]),
+            'indigo': np.array([1, 0, 0.5]),
+            'pink': np.array([0.5, 0.5, 1])
+        }
     }
 
     # Colors to search for
-    colors = ['red', 'blue']
+    colors = ['white', 'mint']
 
     # In-world object dimensions
     BLOCK_HEIGHT = 0.03
@@ -64,6 +64,9 @@ class RobotPlacerWithVision():
         self.pauseStartTime = None
         self.initial_joints = None
         self.drop_joints = None
+
+        self.COLORS['lower'] = {name: color*200 for name, color in self.COLORS['base'].items()}
+        self.COLORS['upper'] = {name: np.maximum(color*255, 100) for name, color in self.COLORS['base'].items()}
 
         # Camera intrinsics
         self.CAMERA['fovy'] = 2 * math.atan(math.tan(self.CAMERA['fovx']*0.5) * (self.CAMERA['height']/self.CAMERA['width']))
@@ -98,16 +101,13 @@ class RobotPlacerWithVision():
         b, g, r = cv2.split(self.current_image)
 
         for name in self.colors:
-            color = self.COLORS[name]
+            lower = self.COLORS['lower'][name]
+            upper = self.COLORS['upper'][name]
 
-            r_t = cv2.threshold(r, 200*color[0], 255*color[0], cv2.THRESH_BINARY)[1]
-            g_t = cv2.threshold(g, 200*color[1], 255*color[1], cv2.THRESH_BINARY)[1]
-            b_t = cv2.threshold(b, 200*color[2], 255*color[2], cv2.THRESH_BINARY)[1]
-            merged = cv2.merge([b_t, g_t, r_t])
-            objects = cv2.threshold(cv2.cvtColor(merged, cv2.COLOR_BGR2GRAY), 1, 255, cv2.THRESH_BINARY)[1]
+            threshold = cv2.inRange(self.current_image, lower, upper)
             
-            contours, hierarchy = cv2.findContours(objects, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-            width, height = objects.shape
+            contours, hierarchy = cv2.findContours(threshold, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+            width, height = threshold.shape
             for i in contours:
                 # Skip if touching edge of image
                 x, y, w, h = cv2.boundingRect(i)
