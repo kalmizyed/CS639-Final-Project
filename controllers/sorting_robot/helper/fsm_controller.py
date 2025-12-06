@@ -153,6 +153,7 @@ class RobotPlacerWithVision():
         if not self.drop_joints:
             self.drop_joints = IK.getInverseKinematics(self.drop_prep_position + self.initial_rotation, self.current_joints)
             self.drop_joints[0] -= math.pi/2
+            self.drop_joints[5] -= math.pi/2
         self.desired_joints = self.drop_joints
         self.location = self.Location.DROP
         self.fsmState = self.generateTrajectoryFromJoints

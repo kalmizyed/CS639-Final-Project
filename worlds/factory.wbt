@@ -24,6 +24,7 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/stairs/protos/StraightStairs.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/universal_robots/protos/UR5e.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/conveyors/protos/ConveyorBelt.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/devices/robotiq/protos/Robotiq2f85Gripper.proto"
 
 WorldInfo {
 }
@@ -508,10 +509,10 @@ UR5e {
   hidden position_7_1 0.7964652119845028
   hidden position_7_2 0.7960343390158559
   hidden position_7_3 0.7964430304196402
-  hidden rotation_8 6.713454349888897e-08 0.3876014171509802 0.9218270669830365 3.141592972920098
+  hidden rotation_8 6.713454349879168e-08 0.3876014171509802 0.9218270669830365 3.141592972920098
   hidden position_9_0 -0.7656502529109819
   hidden rotation_10 -1 0 0 0.7656502529109822
-  hidden rotation_12 6.716718246102724e-08 0.38778985726528 0.9217478107390163 3.1415929728926426
+  hidden rotation_12 6.716718247060816e-08 0.38778985726528 0.9217478107390163 3.1415929728926426
   hidden position_12_0 -0.7660591109745643
   hidden rotation_13 1 0 0 0.7960343390158555
   hidden position_14_0 -0.7656310348594104
@@ -521,6 +522,10 @@ UR5e {
   translation 0 -4.08 0.5
   rotation 0 0 1 1.570846325
   controller "sorting_robot"
+  controllerArgs [
+    "blue"
+    "red"
+  ]
   supervisor TRUE
   toolSlot [
     Pose {
