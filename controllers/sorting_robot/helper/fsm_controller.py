@@ -48,10 +48,10 @@ class RobotPlacerWithVision():
     
     initial_position = [0.55, 0.15, 0.65]
     initial_rotation = [0, 0, math.pi/2]
-    drop_prep_position = [0.55, 0.15, 0.4]
+    drop_prep_position = [0.55, 0.15, 0.5]
     
     gripperClosed = False
-    gripperCloseTime = 20 # Timesteps
+    gripperCloseTime = 12 # Timesteps
     gripperOpenTime = 32 # Timesteps
 
     def __init__(self, colors):
@@ -178,7 +178,7 @@ class RobotPlacerWithVision():
         # convert pixel location to camera-space location
         cx = self.CAMERA['width']/2
         cy = self.CAMERA['height']/2
-        z = self.current_position[2] - self.CONVEYOR_Z_OFFSET
+        z = self.current_position[2] - self.CONVEYOR_Z_OFFSET - self.BLOCK_HEIGHT
         x = (u - cx)*(z/self.CAMERA['fx'])
         y = -(v - cy)*(z/self.CAMERA['fy'])
 
