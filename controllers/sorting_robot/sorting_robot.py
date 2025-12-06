@@ -3,6 +3,7 @@
 from controller import Robot, Supervisor
 import numpy as np
 from helper.fsm_controller import RobotPlacerWithVision
+import sys
 
 # ===== Optional: fast live preview with OpenCV =====
 try:
@@ -118,7 +119,7 @@ def _camera_step_preview():
 # -----------------------------------------------------------------------------
 tt = 0
 
-rpwv = RobotPlacerWithVision()
+rpwv = RobotPlacerWithVision(sys.argv[1:])
 
 current_q  = [-0.343, -1.2, 1.5, -2.0, -1.57, 1.03]
 

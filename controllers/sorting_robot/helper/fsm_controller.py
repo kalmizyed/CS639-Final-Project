@@ -35,9 +35,6 @@ class RobotPlacerWithVision():
         }
     }
 
-    # Colors to search for
-    colors = ['white', 'mint']
-
     # In-world object dimensions
     BLOCK_HEIGHT = 0.03
     CONVEYOR_Z_OFFSET = 0.1
@@ -57,7 +54,9 @@ class RobotPlacerWithVision():
     gripperCloseTime = 20 # Timesteps
     gripperOpenTime = 32 # Timesteps
 
-    def __init__(self):
+    def __init__(self, colors):
+        self.colors = colors
+
         self.fsmState = self.resetToDefault
         self.__block_cur_index__ = 0
         self.trajectory = {}
