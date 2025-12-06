@@ -97,7 +97,6 @@ class RobotPlacerWithVision():
     # Get centers of detected objects within the current image
     def getPixelLocations(self):
         centers = []
-        b, g, r = cv2.split(self.current_image)
 
         for name in self.colors:
             lower = self.COLORS['lower'][name]
