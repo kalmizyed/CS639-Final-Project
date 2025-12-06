@@ -17,6 +17,8 @@ def getRequiredTime(theta_start, theta_end):
 # Get the desired position between start and end joint angles
 # at timestep t out of maximum time steps T
 def getPosition(theta_start, theta_end, t, T):
+    if T == 0:
+        return theta_end
     t *= TIMESTEP_LENGTH
     T *= TIMESTEP_LENGTH
     start = np.array(theta_start)

@@ -95,15 +95,15 @@ class RobotPlacerWithVision():
     # Get centers of detected objects within the current image
     def getPixelLocations(self):
         centers = []
+        b, g, r = cv2.split(self.current_image)
 
         for name in self.colors:
             color = self.COLORS[name]
-            b, g, r = cv2.split(self.current_image)
 
-            r = cv2.threshold(r, 200*color[0], 255*color[0], cv2.THRESH_BINARY)[1]
-            g = cv2.threshold(g, 200*color[1], 255*color[1], cv2.THRESH_BINARY)[1]
-            b = cv2.threshold(b, 200*color[2], 255*color[2], cv2.THRESH_BINARY)[1]
-            merged = cv2.merge([b, g, r])
+            r_t = cv2.threshold(r, 200*color[0], 255*color[0], cv2.THRESH_BINARY)[1]
+            g_t = cv2.threshold(g, 200*color[1], 255*color[1], cv2.THRESH_BINARY)[1]
+            b_t = cv2.threshold(b, 200*color[2], 255*color[2], cv2.THRESH_BINARY)[1]
+            merged = cv2.merge([b_t, g_t, r_t])
             objects = cv2.threshold(cv2.cvtColor(merged, cv2.COLOR_BGR2GRAY), 1, 255, cv2.THRESH_BINARY)[1]
             
             contours, hierarchy = cv2.findContours(objects, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
@@ -224,7 +224,7 @@ class RobotPlacerWithVision():
             if self.location == self.Location.INITIAL:
                 self.fsmState = self.waitForBlock
             elif self.location == self.Location.DROP:
-                self.fsmState = self.dropAndMarkDone
+                self.fsmState = self.dropBlock
             else:
                 self.fsmState = self.gripBlock
 
@@ -238,7 +238,7 @@ class RobotPlacerWithVision():
 
     # Drop block_cur; once gripper is fully open, verify if block is in basket,
     # then update block_cur_index and move to first state
-    def dropAndMarkDone(self):
+    def dropBlock(self):
         if self.gripperClosed:
             self.gripperClosed = False
             self.pauseStartTime = self.timestep
