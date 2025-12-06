@@ -24,13 +24,13 @@ class RobotPlacerWithVision():
             'blue': np.array([1, 0, 0]),
             'green': np.array([0, 1, 0]),
             'yellow': np.array([0, 1, 1]),
-            'purple': np.array([1, 0, 1]),
+            'magenta': np.array([1, 0, 1]),
             'cyan': np.array([1, 1, 0]),
             'white': np.array([1, 1, 1]),
             'orange': np.array([0, 0.5, 1]),
             'lime': np.array([0, 1, 0.5]),
             'mint': np.array([0.5, 1, 0]),
-            'indigo': np.array([1, 0, 0.5]),
+            'purple': np.array([1, 0, 0.5]),
             'pink': np.array([0.5, 0.5, 1])
         }
     }
