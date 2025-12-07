@@ -1,0 +1,653 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../technical/">
+      
+      
+        <link rel="next" href="../reflection/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Experiments - CS 639 Final Project Summary</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#experimental-design" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="CS 639 Final Project Summary" class="md-header__button md-logo" aria-label="CS 639 Final Project Summary" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CS 639 Final Project Summary
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Experiments
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="CS 639 Final Project Summary" class="md-nav__button md-logo" aria-label="CS 639 Final Project Summary" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CS 639 Final Project Summary
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Abstract
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../technical/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design & Implementation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Experiments
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Experiments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#experiment-1-block-frequency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Experiment 1: Block Frequency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experiment-2-block-placement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Experiment 2: Block Placement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experiment-3-acceptable-block-color-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Experiment 3: Acceptable Block Color Sets
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reflection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reflection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#experiment-1-block-frequency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Experiment 1: Block Frequency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experiment-2-block-placement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Experiment 2: Block Placement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experiment-3-acceptable-block-color-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Experiment 3: Acceptable Block Color Sets
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<div><h1 id="experimental-design">Experimental Design</h1>
+<h2 id="experiment-1-block-frequency">Experiment 1: Block Frequency</h2>
+<p><strong>Setup:</strong>
+Sets of 10 blocks are placed in the middle of the belt at decreasing distances between them to increase the frequency of blocks passing through the camera’s path.  The percentage of blocks that get picked up will be measured.</p>
+<p><strong>Hypothesis:</strong>
+There will be a maximum frequency of blocks on the belt, in blocks per meter, past which the UR5e will not be able to sustainably pick them all up.</p>
+<p><strong>Variables:</strong>
+Block frequency <em>f</em>, in blocks per meter</p>
+<p><strong>Metrics:</strong>
+Percentage of blocks picked up, Success%, per tested <em>f</em></p>
+<h2 id="experiment-2-block-placement">Experiment 2: Block Placement</h2>
+<p><strong>Setup:</strong>
+10 blocks are placed (at a low enough frequency not to interfere with the experiment) at every position across the width of the belt (+- 0.18m from the center of the belt’s width) at a granularity of 0.04m.  For this experiment, the placement of the belt was modified to be centered on the camera position and narrow enough that the whole belt fits on the camera.  The percentage of blocks that get picked up are measured as well as the range of positions that are successfully picked up if some blocks aren’t picked up successfully.</p>
+<p><strong>Hypothesis:</strong>
+Regardless of block placement on the belt, the UR5e will be able to pick it up.</p>
+<p><strong>Variables:</strong>
+Vertical placement of block across the width of the belt, <em>y</em></p>
+<p><strong>Metrics:</strong>
+Percentage of placements that get picked up, <code>Success%</code></p>
+<h2 id="experiment-3-acceptable-block-color-sets">Experiment 3: Acceptable Block Color Sets</h2>
+<p><strong>Setup:</strong>
+12 uniquely colored blocks are placed at the center width of the belt at a reliable frequency.  The blocks are colored such that each unique color is at least 0.5 away (on an RGB scale from 0-1) from every other on at least 1 channel.  Each trial will test accepting an increasing set of colors from those 12.</p>
+<p><strong>Hypothesis:</strong>
+Regardless of the size of the set of accepted block colors, the UR5e will pick up all accepted colors and ignore all nonaccepted colors.</p>
+<p><strong>Variables:</strong>
+Cardinality of accepted colors set, <code>|Accepted|</code></p>
+<p><strong>Metrics:</strong>
+Percentage of accepted colors picked up, <code>Success%</code>, and percentage of nonaccepted colors ignored, <code>Ignore%</code>, for each trial</p>
+<p><br></p>
+<h1 id="results-discussion">Results &amp; Discussion</h1>
+<h2 id="experiment-1">Experiment 1</h2>
+<table>
+<thead>
+<tr>
+<th>Trial Number</th>
+<th>Spacing (Meters Between)</th>
+<th>Frequency f (Blocks/Meter)</th>
+<th>Percentage of blocks grabbed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0.5</td>
+<td>2</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0.45</td>
+<td>2.22</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0.4</td>
+<td>2.5</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.35</td>
+<td>2.86</td>
+<td>80%</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0.30</td>
+<td>3.33</td>
+<td>50%</td>
+</tr>
+</tbody>
+</table>
+<p>As the spacing reached a point where blocks were already in the camera’s view by the time it was ready to pick up another block, the amount of dropped blocks drastically increased.  My hypothesis is that the controller isn’t accurately pinpointing the blocks’ locations if it tries to find them directly after getting back to the starting position because its movement hasn’t completely settled by that point.</p>
+<h2 id="experiment-2">Experiment 2</h2>
+<table>
+<thead>
+<tr>
+<th>Percent Success</th>
+<th>80%</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Successful ranges</td>
+<td>[+0.18m, -0.04], [-0.12, -0.16]</td>
+</tr>
+<tr>
+<td>Unsuccessful positions</td>
+<td>-0.08m, -0.18m</td>
+</tr>
+</tbody>
+</table>
+<p>For the two unsuccessful positions, the manipulator moved to and gripped the block successfully but dropped it before reaching the output belt due to issues gripping and/or potential friction issues if moving before lifting enough.</p>
+<p>Note for reproducing: when the block at <code>-0.08</code> failed, I paused the simulation to remove the block so the arm wouldn’t try to retrieve it instead of the next block in the sequence.</p>
+<h2 id="experiment-3">Experiment 3</h2>
+<table>
+<thead>
+<tr>
+<th>Trial Number (|Accepted|)</th>
+<th>Percent Expected Positives</th>
+<th>Percent Expected Negatives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>N/A</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>1</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>5</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>6</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>7</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>8</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>9</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>10</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>11</td>
+<td>100%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>12</td>
+<td>100%</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+<p>As hypothesized, the controller was able to distinguish between as many differently sized sets of colors given the constraint that every color was sufficiently different from one another.  Another test could determine the minimum distance between two colors that could be distinguished by the controller.</p>
+<p><br></p>
+<h1 id="video-examples">Video Examples</h1>
+<h2 id="experiment-2_1">Experiment 2</h2>
+<p>Here's a run of the fourth trial of experiment 2, the first example of blocks failing to be picked up:</p>
+<p><div class="video-container"><iframe src="https://www.youtube.com/embed/Fa_NEw6Jo1g?si=mj5D1UZLUvG_k4Yr" style="position:relative;width:100%;height:22.172vw" frameborder="0" allowfullscreen alt="type:video"></iframe></div></p>
+<h2 id="experiment-3_1">Experiment 3</h2>
+<p>Here's a run of the 6th trial of experiment 3, where only the colors corresponding to every other block on the belt were in the accepted set:</p>
+<p><div class="video-container"><iframe src="https://www.youtube.com/embed/ngVO28Vfh7E?si=WDHqWvZVgWzIV79T" style="position:relative;width:100%;height:22.172vw" frameborder="0" allowfullscreen alt="type:video"></iframe></div></p></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>
