@@ -1,0 +1,3 @@
+# Abstract
+
+This project sought to create a UR5e manipulator controller that can sort or filter different objects from a moving conveyor belt; the scope was limited to different colored blocked in a simulated environment.  This kind of controller could be adapted to work in assembly line environments such that, with greater computer vision techniques, it could be used for tasks such as removing defective products.  The speed, working area, and color differentiation abilities of the current controller were tested to determine the robustness of the implementation.

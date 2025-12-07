@@ -1,0 +1,12 @@
+site_name: CS 639 Final Project Summary
+docs_dir: report
+nav:
+ - Abstract: index.md
+ - Design & Implementation: technical.md
+ - Experiments: experiments.md
+ - Reflection: reflection.md
+ - GitHub Repo: https://github.com/kalmizyed/CS639-Final-Project
+plugins:
+ - mkdocs-video
+theme:
+  name: material
